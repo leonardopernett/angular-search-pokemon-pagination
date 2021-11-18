@@ -1,0 +1,51 @@
+<h2>Listado de pokemon</h2>
+<hr>
+
+<input type="text" placeholder="buscar " class="form-control" #txt (keyup)="onsearch(txt.value)">
+  
+<button class="btn btn-primary" (click)="atras()" [disabled]=" increment== 0">
+  atras
+</button>
+ 
+ <button class="btn btn-primary m-2" (click)="siguiente()" [disabled]="(pokemon | filter:increment:search).length ==0">
+    siguiente
+ </button>
+
+<table class="table">
+  
+   <thead>
+     <tr>
+       <th scope="col">Id</th>
+       <th scope="col">Nombre</th>
+       <th scope="col">Image</th>
+     </tr>
+   </thead>
+   <tbody>
+
+     <ng-container *ngIf="loading; else noloading">
+         <tr>loading...</tr>
+     </ng-container>
+
+     <ng-template #noloading>
+      <tr *ngIf="pokemon.length ==0">
+        <td>no hay datos</td>
+      </tr>
+
+        <tr *ngFor="let poke of pokemon | filter:increment:search ;trackBy:TrackByItem ">
+            <td>{{poke.id}}</td>
+            <td>{{poke.name}}</td>
+            <td>
+              <img 
+                  [src]="poke.pic != null 
+                          ? poke.pic 
+                          :'no-image' " 
+                  [alt]="poke.name" 
+                  width="80"
+                  loading="lazy"
+                >
+            </td>
+      </tr>
+     </ng-template>
+
+   </tbody>
+</table>
